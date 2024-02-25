@@ -22,17 +22,18 @@ public class SseController {
 
   @CrossOrigin(origins = "http://localhost:4200")
   @GetMapping(path = "/data", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public Flux<ServerSentEvent<String>> subscribe() {
+  public ResponseEntity<Flux<ServerSentEvent<String>>>subscribe() {
 
-    return sseService.getRandomData()
-            .map(event->
-                ServerSentEvent.<String> builder() /**create ServerSentEvent as supplier of string data*/
-                    .id(String.valueOf(sseService.getEventId()))
-                    .data(String.valueOf(event))
-                    .event("test-event-1")
-                    .comment("test-comment-1")
-                    .retry(Duration.ofMillis(5000))
-                    .build());
+    return ResponseEntity.ok()
+              .body(sseService.getRandomData()
+                .map(event->
+                      ServerSentEvent.<String> builder() /**create ServerSentEvent as supplier of string data*/
+                          .id(String.valueOf(sseService.getEventId()))
+                          .data(String.valueOf(event))
+                          .event("test-event-1")
+                          .comment("test-comment-1")
+                          .retry(Duration.ofMillis(5000))
+                          .build()));
     }
 
   @CrossOrigin(origins = "http://localhost:4200")

@@ -20,9 +20,13 @@ public class CorsConfig implements WebMvcConfigurer {
 
         log.info("Creating CORS setting Bean");
 
-        registry.addMapping("/api/v1/events/data")
+        registry.addMapping("/api/v1/**")
             .allowedOrigins("localhost:4200")
-            .allowedMethods("GET");
+            .allowedMethods("GET")
+            .allowedHeaders("*")
+            .allowCredentials(true);
+
+        log.info("Created registry: {}",registry.toString());
       }
     };
   }
